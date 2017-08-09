@@ -137,7 +137,7 @@ public class NetworkManager {
                 Log.d("Hourly JSON Data: ", "JSON: " + jsonString);
 
                 Intent extendedDataReceivedIntent = new Intent(WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER);
-                extendedDataReceivedIntent.putExtra(WeatherUtils.HOURLY_JSON_DATA, jsonString);
+                extendedDataReceivedIntent.putExtra(WeatherUtils.EXTENDED_JSON_DATA, jsonString);
                 LocalBroadcastManager.getInstance(mContext).sendBroadcast(extendedDataReceivedIntent);
             }
         }.start();

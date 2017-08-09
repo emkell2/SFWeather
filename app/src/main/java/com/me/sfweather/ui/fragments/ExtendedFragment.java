@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,7 @@ import android.view.ViewGroup;
 import com.me.sfweather.R;
 import com.me.sfweather.adapters.ExtendedForecastAdapter;
 import com.me.sfweather.managers.NetworkManager;
-import com.me.sfweather.models.HourlyForecast;
+import com.me.sfweather.models.ExtendedForecast;
 import com.me.sfweather.ui.activities.WeatherActivity;
 import com.me.sfweather.utilities.JSONUtils;
 import com.me.sfweather.utilities.WeatherUtils;
@@ -34,22 +36,22 @@ import java.util.HashMap;
 public class ExtendedFragment extends Fragment {
 
     // List of all hourly forecast data
-    private ArrayList<HourlyForecast> mExtendedForecastList;
+    private ArrayList<ExtendedForecast> mExtendedForecastList;
     private ExtendedForecastAdapter mExtendedForecastAdapter;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(WeatherUtils.HOURLY_DATA_RECEIVED_FILTER)) {
+            if (action.equals(WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER)) {
                 WeatherActivity.setProgressBarVisibility(View.GONE);
-                String jsonString = intent.getExtras().getString(WeatherUtils.HOURLY_JSON_DATA);
+                String jsonString = intent.getExtras().getString(WeatherUtils.EXTENDED_JSON_DATA);
 
                 // Parse json String for the hourly data
-                HashMap hourlyData = JSONUtils.parseHourlyJSONData(jsonString);
+                HashMap extendedData = JSONUtils.parseExtendedJSONData(jsonString);
 
                 // Create hourly forecast models and store the data in the list
-                WeatherUtils.createHourlyForecast(mExtendedForecastList, hourlyData);
+                WeatherUtils.createExtendedForecast(mExtendedForecastList, extendedData);
                 mExtendedForecastAdapter.notifyDataSetChanged();
             }
         }
@@ -93,7 +95,19 @@ public class ExtendedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_extended, container, false);
+        View v = inflater.inflate(R.layout.fragment_extended, container, false);
+
+        // Setup RecyclerView
+        RecyclerView mRecyclerView = (RecyclerView) v.findViewById(R.id.rvExtendedForecast);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Create hourlyForecastList and Adapter
+        mExtendedForecastList = new ArrayList<>();
+        mExtendedForecastAdapter = new ExtendedForecastAdapter(getContext(), mExtendedForecastList);
+
+        mRecyclerView.setAdapter(mExtendedForecastAdapter);
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -39,7 +39,8 @@ public class ExtendedForecastAdapter extends RecyclerView.Adapter<ExtendedForeca
     @Override
     public void onBindViewHolder(ExtendedForecastAdapter.ViewHolder holder, int position) {
         if (mContext != null) {
-
+            holder.dayOfWeek.setText(extendedForecast.get(position).getDayOfWeek());
+            
         }
     }
 
@@ -51,6 +52,7 @@ public class ExtendedForecastAdapter extends RecyclerView.Adapter<ExtendedForeca
     public static class ViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
         TextView dayOfWeek;
+        TextView date;
         TextView highTemp;
         TextView lowTemp;
         TextView windDayDesc;
@@ -66,6 +68,7 @@ public class ExtendedForecastAdapter extends RecyclerView.Adapter<ExtendedForeca
             super(itemView);
             cv = (CardView) itemView.findViewById(R.id.cvExtendedForecast);
             dayOfWeek = (TextView) itemView.findViewById(R.id.tvDayOfWeek);
+            date = (TextView) itemView.findViewById(R.id.tvDate);
             highTemp = (TextView) itemView.findViewById(R.id.tvHighTemp);
             lowTemp = (TextView) itemView.findViewById(R.id.tvLowTemp);
             precipDay = (TextView) itemView.findViewById(R.id.tvDayPrecip);
