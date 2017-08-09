@@ -1,14 +1,27 @@
 package com.me.sfweather.ui.fragments;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.me.sfweather.R;
+import com.me.sfweather.adapters.ExtendedForecastAdapter;
+import com.me.sfweather.managers.NetworkManager;
+import com.me.sfweather.models.HourlyForecast;
+import com.me.sfweather.ui.activities.WeatherActivity;
+import com.me.sfweather.utilities.JSONUtils;
+import com.me.sfweather.utilities.WeatherUtils;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,14 +32,28 @@ import com.me.sfweather.R;
  * create an instance of this fragment.
  */
 public class ExtendedFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    // List of all hourly forecast data
+    private ArrayList<HourlyForecast> mExtendedForecastList;
+    private ExtendedForecastAdapter mExtendedForecastAdapter;
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(WeatherUtils.HOURLY_DATA_RECEIVED_FILTER)) {
+                WeatherActivity.setProgressBarVisibility(View.GONE);
+                String jsonString = intent.getExtras().getString(WeatherUtils.HOURLY_JSON_DATA);
+
+                // Parse json String for the hourly data
+                HashMap hourlyData = JSONUtils.parseHourlyJSONData(jsonString);
+
+                // Create hourly forecast models and store the data in the list
+                WeatherUtils.createHourlyForecast(mExtendedForecastList, hourlyData);
+                mExtendedForecastAdapter.notifyDataSetChanged();
+            }
+        }
+    };
 
     private OnFragmentInteractionListener mListener;
 
@@ -46,8 +73,6 @@ public class ExtendedFragment extends Fragment {
     public static ExtendedFragment newInstance(String param1, String param2) {
         ExtendedFragment fragment = new ExtendedFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,10 +80,13 @@ public class ExtendedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        // Register broadcast receiver
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
+                new IntentFilter(WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER));
+
+        WeatherActivity.setProgressBarVisibility(View.VISIBLE);
+        NetworkManager.getInstance(getContext()).getHourlyForecastData("");
     }
 
     @Override
@@ -84,6 +112,12 @@ public class ExtendedFragment extends Fragment {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
     }
 
     @Override

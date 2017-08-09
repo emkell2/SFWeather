@@ -12,7 +12,9 @@ import java.util.List;
 public class WeatherUtils {
     // Intent Strings
     public static String HOURLY_DATA_RECEIVED_FILTER = "Hourly Data Received";
+    public static String EXTENDED_DATA_RECEIVED_FILTER = "Extended Data Received";
     public static String HOURLY_JSON_DATA = "Hourly JSON Data";
+    public static String EXTENDED_JSON_DATA = "Extended JSON Data";
 
     // Hourly Strings
     public static String TIMES = "times";
@@ -26,9 +28,13 @@ public class WeatherUtils {
     public static final String CLEAR_DAY = "clear";
     public static final String PARTLY_CLOUDY_DAY = "partlycloudy";
     public static final String MOSTLY_CLOUDY_DAY = "mostlycloudy";
+    public static final String CHANCE_T_STORMS_DAY = "chancetstorms";
+    public static final String CHANCE_RAIN_DAY = "chancerain";
     public static final String CLEAR_NIGHT = "nt_clear";
     public static final String PARTLY_CLOUDY_NIGHT = "nt_partlycloudy";
     public static final String MOSTLY_CLOUDY_NIGHT= "nt_mostlycloudy";
+    public static final String CHANCE_T_STORMS_NIGHT = "nt_chancetstorms";
+    public static final String CHANCE_RAIN_NIGHT = "nt_chancerain";
 
     // Degrees Symbol
     public static final String DEGREE_SYMBOL = " \u2109";

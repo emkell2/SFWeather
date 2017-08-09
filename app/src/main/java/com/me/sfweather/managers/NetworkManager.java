@@ -92,4 +92,54 @@ public class NetworkManager {
             }
         }.start();
     }
+
+    public void getExtendedForecastData(String location) {
+        new Thread() {
+            @Override
+            public void run() {
+                HttpURLConnection urlConnection = null;
+                URL url = null;
+                try {
+                    url = new URL("http://api.wunderground.com/api/26db30d44f3121e2/forecast10day/q/NC/Durham.json");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setReadTimeout(10000 /* milliseconds */ );
+                    urlConnection.setConnectTimeout(15000 /* milliseconds */ );
+                    urlConnection.setDoOutput(true);
+                    urlConnection.connect();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                BufferedReader br = null;
+                StringBuilder sb = new StringBuilder();
+                try {
+                    br = new BufferedReader(new InputStreamReader(url.openStream()));
+
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+
+                    if (br != null) {
+                        br.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                String jsonString = sb.toString();
+                Log.d("Hourly JSON Data: ", "JSON: " + jsonString);
+
+                Intent extendedDataReceivedIntent = new Intent(WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER);
+                extendedDataReceivedIntent.putExtra(WeatherUtils.HOURLY_JSON_DATA, jsonString);
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(extendedDataReceivedIntent);
+            }
+        }.start();
+    }
 }

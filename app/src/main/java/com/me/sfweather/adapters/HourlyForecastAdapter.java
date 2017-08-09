@@ -67,6 +67,14 @@ public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAd
                     case WeatherUtils.MOSTLY_CLOUDY_NIGHT:
                         holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.nt_cloudy));
                         break;
+                    case WeatherUtils.CHANCE_RAIN_DAY:
+                    case WeatherUtils.CHANCE_RAIN_NIGHT:
+                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.chancerain));
+                        break;
+                    case WeatherUtils.CHANCE_T_STORMS_DAY:
+                    case WeatherUtils.CHANCE_T_STORMS_NIGHT:
+                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.chancetstorms));
+                        break;
                     default:
                         holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.clear));
                         break;
