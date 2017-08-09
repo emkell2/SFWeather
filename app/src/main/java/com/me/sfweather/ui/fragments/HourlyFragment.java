@@ -14,7 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.me.sfweather.HourlyForecastAdapter;
+import com.me.sfweather.adapters.HourlyForecastAdapter;
 import com.me.sfweather.R;
 import com.me.sfweather.managers.NetworkManager;
 import com.me.sfweather.models.HourlyForecast;

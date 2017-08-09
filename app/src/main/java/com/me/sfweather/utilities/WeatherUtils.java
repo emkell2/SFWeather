@@ -22,9 +22,23 @@ public class WeatherUtils {
     public static String WIND_DIRS = "wind directions";
     public static String CONDITIONS = "conditions";
 
+    // Conditions
+    public static final String CLEAR_DAY = "clear";
+    public static final String PARTLY_CLOUDY_DAY = "partlycloudy";
+    public static final String MOSTLY_CLOUDY_DAY = "mostlycloudy";
+    public static final String CLEAR_NIGHT = "nt_clear";
+    public static final String PARTLY_CLOUDY_NIGHT = "nt_partlycloudy";
+    public static final String MOSTLY_CLOUDY_NIGHT= "nt_mostlycloudy";
+
+    // Degrees Symbol
+    public static final String DEGREE_SYMBOL = " \u2109";
+    public static final String PERCENT_SYMBOL = " %";
+
     public static void createHourlyForecast(List<HourlyForecast> hourlyForecast,
                                             HashMap<String, List<String>> hourlyData) {
-        for (int i = 0; i < hourlyData.size(); i++) {
+        int numHours = hourlyData.get(TIMES).size();
+
+        for (int i = 0; i < numHours; i++) {
             HourlyForecast hourlyForecastItem = new HourlyForecast();
 
             hourlyForecastItem.setId(i);

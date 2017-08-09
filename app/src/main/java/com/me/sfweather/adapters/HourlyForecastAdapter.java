@@ -1,4 +1,4 @@
-package com.me.sfweather;
+package com.me.sfweather.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.me.sfweather.R;
 import com.me.sfweather.models.HourlyForecast;
+import com.me.sfweather.utilities.WeatherUtils;
 
 import java.util.ArrayList;
 
@@ -39,33 +41,35 @@ public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAd
     @Override
     public void onBindViewHolder(HourlyForecastAdapter.ViewHolder holder, int position) {
         if (mContext != null) {
-            holder.time.setText(hourlyForecast.get(position).getTime());
-            holder.temp.setText(hourlyForecast.get(position).getTemp());
-            holder.precip.setText(hourlyForecast.get(position).getPrecip());
-            holder.wind.setText(hourlyForecast.get(position).getWind());
+            String time = formatTime(hourlyForecast.get(position).getTime());
+            holder.time.setText(time);
+            holder.temp.setText(hourlyForecast.get(position).getTemp() + WeatherUtils.DEGREE_SYMBOL);
+            holder.precip.setText(hourlyForecast.get(position).getPrecip() + WeatherUtils.PERCENT_SYMBOL);
+            holder.wind.setText(hourlyForecast.get(position).getWind() + " MPH");
 
             // Set condition data
             String condition = hourlyForecast.get(position).getCondition();
+            condition = condition.replace(".gif", "");
+            condition = condition.substring(28);
             if (!TextUtils.isEmpty(condition)) {
-                switch (condition) {
-//                    case WorkoutUtilities.AMAZING:
-//                    case WorkoutUtilities.GREAT:
-//                        holder.faceImage.setImageDrawable(mContext.getResources()
-//                                .getDrawable(R.drawable.ic_smilie_happy));
-//                        break;
-//                    case WorkoutUtilities.GOOD:
-//                        holder.faceImage.setImageDrawable(mContext.getResources()
-//                                .getDrawable(R.drawable.ic_smilie_satisfied));
-//                        break;
-//                    case WorkoutUtilities.BAD:
-//                    case WorkoutUtilities.AWFUL:
-//                        holder.faceImage.setImageDrawable(mContext.getResources()
-//                                .getDrawable(R.drawable.ic_smilie_sad));
-//                        break;
-//                    default:
-//                        holder.faceImage.setImageDrawable(mContext.getResources()
-//                                .getDrawable(R.drawable.ic_smilie_happy));
-//                        break;
+                switch (condition.toLowerCase()) {
+                    case WeatherUtils.CLEAR_DAY:
+                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.clear));
+                        break;
+                    case WeatherUtils.CLEAR_NIGHT:
+                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.nt_clear));
+                        break;
+                    case WeatherUtils.PARTLY_CLOUDY_DAY:
+                    case WeatherUtils.MOSTLY_CLOUDY_DAY:
+                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.cloudy));
+                        break;
+                    case WeatherUtils.PARTLY_CLOUDY_NIGHT:
+                    case WeatherUtils.MOSTLY_CLOUDY_NIGHT:
+                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.nt_cloudy));
+                        break;
+                    default:
+                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.clear));
+                        break;
                 }
             }
         }
@@ -74,6 +78,12 @@ public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAd
     @Override
     public int getItemCount() {
         return hourlyForecast.size();
+    }
+
+    private String formatTime(String rawTime) {
+        String result = rawTime.replace(":00", "");
+
+        return result;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
