@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.WeatherActivity"
+    tools:showIn="@layout/activity_weather">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:background="@color/colorPrimary"
+            app:tabTextColor="@android:color/darker_gray"
+            app:tabSelectedTextColor="@android:color/white">
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabHourly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HOURLY"/>
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabDetailed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DETAILED"/>
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabExtended"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EXTENDED"/>
+
+        </android.support.design.widget.TabLayout>
+
+    </android.support.v4.view.ViewPager>
+
+</RelativeLayout>
