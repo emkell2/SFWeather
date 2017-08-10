@@ -1,4 +1,4 @@
-package com.me.sfweather.ui.fragments;
+package com.me.sfweather.views.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,7 +19,7 @@ import com.me.sfweather.R;
 import com.me.sfweather.adapters.ExtendedForecastAdapter;
 import com.me.sfweather.managers.NetworkManager;
 import com.me.sfweather.models.ExtendedForecast;
-import com.me.sfweather.ui.activities.WeatherActivity;
+import com.me.sfweather.views.activities.WeatherActivity;
 import com.me.sfweather.utilities.JSONUtils;
 import com.me.sfweather.utilities.WeatherUtils;
 

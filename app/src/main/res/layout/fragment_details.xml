@@ -2,45 +2,161 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.DetailsFragment"
+    tools:context=".views.fragments.DetailsFragment"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="16dp"
     android:layout_marginBottom="16dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_alignParentLeft="true">
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tvDay0CurrTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="77"
+            android:text="NOW"
             android:textSize="24sp"/>
 
-        <TextView
-            android:id="@+id/tvDay0MainDesc"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/rlTemp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentLeft="true">
+
+                <TextView
+                    android:id="@+id/tvCurrTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="24sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Feels like"
+                    android:maxLines="1"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ivCurrWeather"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
+
+            <TextView
+                android:id="@+id/tvConditionDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ivCurrWeather"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlWind"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="CLOUDY"
-            android:textSize="24sp"/>
+            android:layout_below="@id/rlTemp">
 
-        <TextView
-            android:id="@+id/tvDay0HiLo"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="WIND"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/currWind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlHumidity"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="80/73"
-            android:textSize="24sp"/>
-    </LinearLayout>
+            android:layout_below="@id/rlWind">
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/cloudy" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="HUMIDITY"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/currHumidity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlDewPoint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rlHumidity">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="DEW POINT"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/currDewPoint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlPressure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rlDewPoint">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="PRESSURE"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/currPressure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlUVIndex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rlPressure">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="UV INDEX"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/currUVIndex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 </RelativeLayout>

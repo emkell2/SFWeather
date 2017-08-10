@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
 import com.me.sfweather.R;
+import com.me.sfweather.models.CurrentForecast;
 import com.me.sfweather.models.ExtendedForecast;
 import com.me.sfweather.models.HourlyForecast;
 
@@ -18,8 +19,10 @@ import java.util.List;
 public class WeatherUtils {
     // Intent Strings
     public static final String HOURLY_DATA_RECEIVED_FILTER = "Hourly Data Received";
+    public static final String CURRENT_DATA_RECEIVED_FILTER = "Current Data Received";
     public static final String EXTENDED_DATA_RECEIVED_FILTER = "Extended Data Received";
     public static final String HOURLY_JSON_DATA = "Hourly JSON Data";
+    public static final String CURRENT_JSON_DATA = "Current JSON Data";
     public static final String EXTENDED_JSON_DATA = "Extended JSON Data";
 
     // Hourly Strings
@@ -29,6 +32,16 @@ public class WeatherUtils {
     public static final String WIND_SPEEDS = "wind speeds";
     public static final String WIND_DIRS = "wind directions";
     public static final String CONDITIONS = "conditions";
+
+    // Current Strings
+    public static final String FEELS_LIKE = "feels like";
+    public static final String CONDITION = "condition";
+    public static final String CONDITION_DESC = "condition description";
+    public static final String WIND = "wind";
+    public static final String HUMIDITY = "humidity";
+    public static final String DEW_POINT = "dew point";
+    public static final String PRESSURE = "pressure";
+    public static final String UV_INDEX = "uv index";
 
     // Extended Strings
     public static final String DAYS_OF_WEEK = "days of week";
@@ -82,6 +95,22 @@ public class WeatherUtils {
         }
     }
 
+    public static CurrentForecast createCurrentForecast(HashMap<String, String> currentData) {
+        CurrentForecast currentForecastItem = new CurrentForecast();
+
+        currentForecastItem.setId("0");
+        currentForecastItem.setFeelsLike(currentData.get(WeatherUtils.FEELS_LIKE));
+        currentForecastItem.setCondition(currentData.get(WeatherUtils.CONDITION));
+        currentForecastItem.setConditionDesc(currentData.get(WeatherUtils.CONDITION_DESC));
+        currentForecastItem.setWind(currentData.get(WeatherUtils.WIND));
+        currentForecastItem.setHumidity(currentData.get(WeatherUtils.HUMIDITY));
+        currentForecastItem.setDewPoint(currentData.get(WeatherUtils.DEW_POINT));
+        currentForecastItem.setPressure(currentData.get(WeatherUtils.PRESSURE));
+        currentForecastItem.setUvIndex(currentData.get(WeatherUtils.UV_INDEX));
+
+        return currentForecastItem;
+    }
+
     public static void createExtendedForecast(List<ExtendedForecast> extendedForecast,
                                             HashMap<String, List<String>> extendedData) {
         int dayIndex;
@@ -91,7 +120,6 @@ public class WeatherUtils {
             ExtendedForecast extendedForecastItem = new ExtendedForecast();
 
             extendedForecastItem.setId(i);
-
             extendedForecastItem.setDate(extendedData.get(WeatherUtils.DATES).get(i));
             extendedForecastItem.setHighTemp(extendedData.get(WeatherUtils.HIGH_TEMPS).get(i));
             extendedForecastItem.setLowTemp(extendedData.get(WeatherUtils.LOW_TEMPS).get(i));

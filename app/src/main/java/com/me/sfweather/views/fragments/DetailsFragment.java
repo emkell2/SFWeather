@@ -1,4 +1,4 @@
-package com.me.sfweather.ui.fragments;
+package com.me.sfweather.views.fragments;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,68 +8,62 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.me.sfweather.R;
-import com.me.sfweather.adapters.HourlyForecastAdapter;
 import com.me.sfweather.managers.NetworkManager;
-import com.me.sfweather.models.HourlyForecast;
-import com.me.sfweather.ui.activities.WeatherActivity;
+import com.me.sfweather.models.CurrentForecast;
 import com.me.sfweather.utilities.JSONUtils;
 import com.me.sfweather.utilities.WeatherUtils;
+import com.me.sfweather.views.activities.WeatherActivity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link HourlyFragment.OnFragmentInteractionListener} interface
+ * {@link DetailsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link HourlyFragment#newInstance} factory method to
+ * Use the {@link DetailsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HourlyFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class DetailsFragment extends Fragment {
+    private TextView feelsLike;
+    private TextView conditionDesc;
+    private TextView wind;
+    private TextView humidity;
+    private TextView dewPoint;
+    private TextView pressure;
+    private TextView uvIndex;
+    private ImageView condition;
 
-    // List of all hourly forecast data
-    private ArrayList<HourlyForecast> mHourlyForecastList;
-    private HourlyForecastAdapter mHourlyForecastAdapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private OnFragmentInteractionListener mListener;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(WeatherUtils.HOURLY_DATA_RECEIVED_FILTER)) {
+            if (action.equals(WeatherUtils.CURRENT_DATA_RECEIVED_FILTER)) {
                 WeatherActivity.setProgressBarVisibility(View.GONE);
-                String jsonString = intent.getExtras().getString(WeatherUtils.HOURLY_JSON_DATA);
+                String jsonString = intent.getExtras().getString(WeatherUtils.CURRENT_JSON_DATA);
 
-                // Parse json String for the hourly data
-                HashMap hourlyData = JSONUtils.parseHourlyJSONData(jsonString);
+                // Parse json String for the current data
+                HashMap currentData = JSONUtils.parseCurrentJSONData(jsonString);
 
-                // Create hourly forecast models and store the data in the list
-                WeatherUtils.createHourlyForecast(mHourlyForecastList, hourlyData);
-                mHourlyForecastAdapter.notifyDataSetChanged();
+                // Create current forecast model and store the data in it
+                CurrentForecast mCurrentForecast = WeatherUtils.createCurrentForecast(currentData);
 
-                if ((mSwipeRefreshLayout != null) && (mSwipeRefreshLayout.isRefreshing())) {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
+                // Populate views with model data
+                populateViews(mCurrentForecast);
             }
         }
     };
 
-    private OnFragmentInteractionListener mListener;
-
-    public HourlyFragment() {
+    public DetailsFragment() {
         // Required empty public constructor
     }
 
@@ -79,14 +73,12 @@ public class HourlyFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment HourlyFragment.
+     * @return A new instance of fragment DetailsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HourlyFragment newInstance(String param1, String param2) {
-        HourlyFragment fragment = new HourlyFragment();
+    public static DetailsFragment newInstance(String param1, String param2) {
+        DetailsFragment fragment = new DetailsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -97,36 +89,23 @@ public class HourlyFragment extends Fragment {
 
         // Register broadcast receiver
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
-                new IntentFilter(WeatherUtils.HOURLY_DATA_RECEIVED_FILTER));
-
-        WeatherActivity.setProgressBarVisibility(View.VISIBLE);
-        NetworkManager.getInstance(getContext()).getHourlyForecastData("");
+                new IntentFilter(WeatherUtils.CURRENT_DATA_RECEIVED_FILTER));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_hourly, container, false);
+        View v = inflater.inflate(R.layout.fragment_details, container, false);
 
-        // Setup RecyclerView
-        RecyclerView mRecyclerView = (RecyclerView) v.findViewById(R.id.rvHourlyForecast);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // Create hourlyForecastList and Adapter
-        mHourlyForecastList = new ArrayList<>();
-        mHourlyForecastAdapter = new HourlyForecastAdapter(getContext(), mHourlyForecastList);
-
-        mRecyclerView.setAdapter(mHourlyForecastAdapter);
-
-        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.Blue_700);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshItems();
-            }
-        });
+        feelsLike = (TextView) v.findViewById(R.id.tvCurrTemp);
+        conditionDesc = (TextView) v.findViewById(R.id.tvConditionDesc);
+        wind = (TextView) v.findViewById(R.id.currWind);
+        humidity = (TextView) v.findViewById(R.id.currHumidity);
+        dewPoint = (TextView) v.findViewById(R.id.currDewPoint);
+        pressure = (TextView) v.findViewById(R.id.currPressure);
+        uvIndex = (TextView) v.findViewById(R.id.currUVIndex);
+        condition = (ImageView) v.findViewById(R.id.ivCurrWeather);
 
         return v;
     }
@@ -149,8 +128,23 @@ public class HourlyFragment extends Fragment {
         }
     }
 
-    private void refreshItems() {
-        NetworkManager.getInstance(getContext()).getHourlyForecastData("");
+    @Override
+    public void onResume() {
+        super.onResume();
+        NetworkManager.getInstance(getContext()).getCurrentForecastData("");
+    }
+
+    public void populateViews(CurrentForecast currentForecast) {
+        feelsLike.setText(currentForecast.getFeelsLike());
+        conditionDesc.setText(currentForecast.getConditionDesc());
+        wind.setText(currentForecast.getWind());
+        humidity.setText(currentForecast.getHumidity());
+        dewPoint.setText(currentForecast.getDewPoint());
+        pressure.setText(currentForecast.getPressure());
+        uvIndex.setText(currentForecast.getUvIndex());
+
+        condition.setImageDrawable(WeatherUtils.getConditionDrawable(getContext(),
+                currentForecast.getCondition()));
     }
 
     @Override

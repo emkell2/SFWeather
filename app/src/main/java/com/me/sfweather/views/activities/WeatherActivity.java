@@ -1,4 +1,4 @@
-package com.me.sfweather.ui.activities;
+package com.me.sfweather.views.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -14,14 +14,14 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.me.sfweather.R;
-import com.me.sfweather.ui.fragments.DetailsFragment;
-import com.me.sfweather.ui.fragments.ExtendedFragment;
-import com.me.sfweather.ui.fragments.HourlyFragment;
+import com.me.sfweather.views.fragments.DetailsFragment;
+import com.me.sfweather.views.fragments.ExtendedFragment;
+import com.me.sfweather.views.fragments.HourlyFragment;
 
 public class WeatherActivity extends AppCompatActivity {
 
     public static final String HOURLY = "HOURLY";
-    public static final String DETAILED = "DETAILED";
+    public static final String CURRENT = "CURRENT";
     public static final String EXTENDED = "EXTENDED";
 
     private static ProgressBar progressBar;
@@ -43,7 +43,7 @@ public class WeatherActivity extends AppCompatActivity {
         // Setup TabLayout
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.addTab(tabLayout.newTab().setText(HOURLY));
-        tabLayout.addTab(tabLayout.newTab().setText(DETAILED));
+        tabLayout.addTab(tabLayout.newTab().setText(CURRENT));
         tabLayout.addTab(tabLayout.newTab().setText(EXTENDED));
 
         // Setup ProgressBar
@@ -140,7 +140,7 @@ public class WeatherActivity extends AppCompatActivity {
                 case 0:
                     return HOURLY;
                 case 1:
-                    return DETAILED;
+                    return CURRENT;
                 case 2:
                     return EXTENDED;
                 default:

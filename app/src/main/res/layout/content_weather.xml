@@ -5,7 +5,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.activities.WeatherActivity"
+    tools:context=".views.activities.WeatherActivity"
     tools:showIn="@layout/activity_weather">
 
     <android.support.v4.view.ViewPager
@@ -32,7 +32,7 @@
                 android:id="@+id/tabDetailed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="DETAILED"/>
+                android:text="CURRENT"/>
 
             <android.support.design.widget.TabItem
                 android:id="@+id/tabExtended"

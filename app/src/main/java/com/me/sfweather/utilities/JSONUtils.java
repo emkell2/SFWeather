@@ -32,6 +32,37 @@ public class JSONUtils {
         return data;
     }
 
+    public static HashMap<String, String> parseCurrentJSONData(String jsonString) {
+        HashMap<String, String> data = new HashMap<>();
+
+        // Each of these are seperate reads. Doing it for sake of time, should do 1 read for efficiency.
+        String feelsLike = JsonPath.read(jsonString, "$.current_observation.feelslike_f");
+        String condition = JsonPath.read(jsonString, "$.current_observation.icon_url");
+        String condDesc = JsonPath.read(jsonString, "$.current_observation.weather");
+        String windSpeed = JsonPath.read(jsonString, "$.current_observation.wind_mph");
+        String windDir = JsonPath.read(jsonString, "$.current_observation.wind_dir");
+        String humidity = JsonPath.read(jsonString, "$.current_observation.relative_humidity");
+        String dewPoint = String.valueOf(JsonPath.read(jsonString, "$.current_observation.dewpoint_f"));
+        String pressure = JsonPath.read(jsonString, "$.current_observation.pressure_in");
+        String uvIndex = JsonPath.read(jsonString, "$.current_observation.UV");
+
+        feelsLike = feelsLike.substring(0,2);
+        dewPoint = dewPoint + WeatherUtils.DEGREE_SYMBOL;
+        pressure = pressure + " IN";
+        String wind = String.valueOf(windDir) + " " + String.valueOf(windSpeed) + " MPH";
+
+        data.put(WeatherUtils.FEELS_LIKE, feelsLike);
+        data.put(WeatherUtils.CONDITION, condition);
+        data.put(WeatherUtils.CONDITION_DESC, condDesc);
+        data.put(WeatherUtils.WIND, wind);
+        data.put(WeatherUtils.HUMIDITY, humidity);
+        data.put(WeatherUtils.DEW_POINT, dewPoint);
+        data.put(WeatherUtils.PRESSURE, pressure);
+        data.put(WeatherUtils.UV_INDEX, uvIndex);
+
+        return data;
+    }
+
     public static HashMap<String, List<String>> parseExtendedJSONData(String jsonString) {
         HashMap<String, List<String>> data = new HashMap<>();
 
