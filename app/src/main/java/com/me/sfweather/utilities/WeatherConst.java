@@ -60,7 +60,7 @@ public class WeatherConst {
     public static final String MOSTLY_CLOUDY_NIGHT= "nt_mostlycloudy";
     public static final String CHANCE_T_STORMS_NIGHT = "nt_chancetstorms";
     public static final String CHANCE_RAIN_NIGHT = "nt_chancerain";
-    
+
     // Symbols
     public static final String DEGREE_SYMBOL = " \u2109";
     public static final String PERCENT_SYMBOL = " %";

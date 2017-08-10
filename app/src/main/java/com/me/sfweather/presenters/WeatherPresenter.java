@@ -10,7 +10,7 @@ import com.me.sfweather.models.ExtendedForecast;
 import com.me.sfweather.models.HourlyForecast;
 import com.me.sfweather.presenters.repository.NetworkManager;
 import com.me.sfweather.utilities.JSONUtils;
-import com.me.sfweather.utilities.WeatherUtils;
+import com.me.sfweather.utilities.WeatherConst;
 import com.me.sfweather.views.activities.WeatherActivity;
 import com.me.sfweather.views.interfaces.ViewInterface;
 
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.me.sfweather.utilities.WeatherUtils.TIMES;
+import static com.me.sfweather.utilities.WeatherConst.TIMES;
 
 /**
  * Created by erin.kelley on 8/10/17.
@@ -55,8 +55,8 @@ public class WeatherPresenter {
         WeatherActivity.setProgressBarVisibility(View.GONE);
 
         Intent updateViewData;
-        if (action.equals(WeatherUtils.CURRENT_DATA_RECEIVED_FILTER)) {
-            String jsonString = intent.getExtras().getString(WeatherUtils.CURRENT_JSON_DATA);
+        if (action.equals(WeatherConst.CURRENT_DATA_RECEIVED_FILTER)) {
+            String jsonString = intent.getExtras().getString(WeatherConst.CURRENT_JSON_DATA);
 
             // Parse json String for the current data
             HashMap currentData = JSONUtils.parseCurrentJSONData(jsonString);
@@ -64,34 +64,34 @@ public class WeatherPresenter {
             // Create current forecast model and store the data in it
             CurrentForecast mCurrentForecast = createCurrentForecast(currentData);
 
-            updateViewData = new Intent(WeatherUtils.ACTION_UPDATE_CURRENT_VIEWS);
-            updateViewData.putExtra(WeatherUtils.CURRENT_DATA, mCurrentForecast);
+            updateViewData = new Intent(WeatherConst.ACTION_UPDATE_CURRENT_VIEWS);
+            updateViewData.putExtra(WeatherConst.CURRENT_DATA, mCurrentForecast);
             LocalBroadcastManager.getInstance(mContext).sendBroadcast(updateViewData);
 
             // Populate views with model data
             mView.onNewData();
-        } else if (action.equals(WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER)) {
-            String jsonString = intent.getExtras().getString(WeatherUtils.EXTENDED_JSON_DATA);
+        } else if (action.equals(WeatherConst.EXTENDED_DATA_RECEIVED_FILTER)) {
+            String jsonString = intent.getExtras().getString(WeatherConst.EXTENDED_JSON_DATA);
 
             HashMap extendedData = JSONUtils.parseExtendedJSONData(jsonString);
 
             ArrayList<ExtendedForecast> mExtendedForecastList = createExtendedForecast(extendedData);
 
-            updateViewData = new Intent(WeatherUtils.ACTION_UPDATE_EXTENDED_VIEWS);
-            updateViewData.putExtra(WeatherUtils.EXTENDED_DATA, mExtendedForecastList);
+            updateViewData = new Intent(WeatherConst.ACTION_UPDATE_EXTENDED_VIEWS);
+            updateViewData.putExtra(WeatherConst.EXTENDED_DATA, mExtendedForecastList);
             LocalBroadcastManager.getInstance(mContext).sendBroadcast(updateViewData);
 
             mView.onNewData();
 
-        } else if (action.equals(WeatherUtils.HOURLY_DATA_RECEIVED_FILTER)) {
-            String jsonString = intent.getExtras().getString(WeatherUtils.HOURLY_JSON_DATA);
+        } else if (action.equals(WeatherConst.HOURLY_DATA_RECEIVED_FILTER)) {
+            String jsonString = intent.getExtras().getString(WeatherConst.HOURLY_JSON_DATA);
 
             HashMap hourlyData = JSONUtils.parseHourlyJSONData(jsonString);
 
             ArrayList<HourlyForecast> mHourlyForecastList = createHourlyForecast(hourlyData);
 
-            updateViewData = new Intent(WeatherUtils.ACTION_UPDATE_HOURLY_VIEWS);
-            updateViewData.putExtra(WeatherUtils.HOURLY_DATA, mHourlyForecastList);
+            updateViewData = new Intent(WeatherConst.ACTION_UPDATE_HOURLY_VIEWS);
+            updateViewData.putExtra(WeatherConst.HOURLY_DATA, mHourlyForecastList);
             LocalBroadcastManager.getInstance(mContext).sendBroadcast(updateViewData);
 
             mView.onNewData();
@@ -107,13 +107,13 @@ public class WeatherPresenter {
 
             hourlyForecastItem.setId(i);
             hourlyForecastItem.setTime(hourlyData.get(TIMES).get(i));
-            hourlyForecastItem.setTemp(hourlyData.get(WeatherUtils.TEMPS).get(i));
-            hourlyForecastItem.setPrecip(hourlyData.get(WeatherUtils.PRECIPS).get(i));
-            hourlyForecastItem.setCondition(hourlyData.get(WeatherUtils.CONDITIONS).get(i));
+            hourlyForecastItem.setTemp(hourlyData.get(WeatherConst.TEMPS).get(i));
+            hourlyForecastItem.setPrecip(hourlyData.get(WeatherConst.PRECIPS).get(i));
+            hourlyForecastItem.setCondition(hourlyData.get(WeatherConst.CONDITIONS).get(i));
             hourlyForecastItem.setWind(
-                    hourlyData.get(WeatherUtils.WIND_DIRS).get(i)
+                    hourlyData.get(WeatherConst.WIND_DIRS).get(i)
                             + " "
-                            + hourlyData.get(WeatherUtils.WIND_SPEEDS).get(i));
+                            + hourlyData.get(WeatherConst.WIND_SPEEDS).get(i));
 
             hourlyForecast.add(hourlyForecastItem);
         }
@@ -125,14 +125,14 @@ public class WeatherPresenter {
         CurrentForecast currentForecastItem = new CurrentForecast();
 
         currentForecastItem.setId("0");
-        currentForecastItem.setFeelsLike(currentData.get(WeatherUtils.FEELS_LIKE));
-        currentForecastItem.setCondition(currentData.get(WeatherUtils.CONDITION));
-        currentForecastItem.setConditionDesc(currentData.get(WeatherUtils.CONDITION_DESC));
-        currentForecastItem.setWind(currentData.get(WeatherUtils.WIND));
-        currentForecastItem.setHumidity(currentData.get(WeatherUtils.HUMIDITY));
-        currentForecastItem.setDewPoint(currentData.get(WeatherUtils.DEW_POINT));
-        currentForecastItem.setPressure(currentData.get(WeatherUtils.PRESSURE));
-        currentForecastItem.setUvIndex(currentData.get(WeatherUtils.UV_INDEX));
+        currentForecastItem.setFeelsLike(currentData.get(WeatherConst.FEELS_LIKE));
+        currentForecastItem.setCondition(currentData.get(WeatherConst.CONDITION));
+        currentForecastItem.setConditionDesc(currentData.get(WeatherConst.CONDITION_DESC));
+        currentForecastItem.setWind(currentData.get(WeatherConst.WIND));
+        currentForecastItem.setHumidity(currentData.get(WeatherConst.HUMIDITY));
+        currentForecastItem.setDewPoint(currentData.get(WeatherConst.DEW_POINT));
+        currentForecastItem.setPressure(currentData.get(WeatherConst.PRESSURE));
+        currentForecastItem.setUvIndex(currentData.get(WeatherConst.UV_INDEX));
 
         return currentForecastItem;
     }
@@ -146,26 +146,26 @@ public class WeatherPresenter {
             ExtendedForecast extendedForecastItem = new ExtendedForecast();
 
             extendedForecastItem.setId(i);
-            extendedForecastItem.setDate(extendedData.get(WeatherUtils.DATES).get(i));
-            extendedForecastItem.setHighTemp(extendedData.get(WeatherUtils.HIGH_TEMPS).get(i));
-            extendedForecastItem.setLowTemp(extendedData.get(WeatherUtils.LOW_TEMPS).get(i));
-            extendedForecastItem.setWindMPHDay(String.valueOf(extendedData.get(WeatherUtils.DAY_WIND_MPHS).get(i)));
-            extendedForecastItem.setWindMPHNight(String.valueOf(extendedData.get(WeatherUtils.NIGHT_WIND_MPHS).get(i)));
-            extendedForecastItem.setWindDirDay(extendedData.get(WeatherUtils.DAY_WIND_DIRS).get(i));
-            extendedForecastItem.setWindDirNight(extendedData.get(WeatherUtils.NIGHT_WIND_DIRS).get(i));
-            extendedForecastItem.setCondDesc(extendedData.get(WeatherUtils.COND_DESCS).get(i));
+            extendedForecastItem.setDate(extendedData.get(WeatherConst.DATES).get(i));
+            extendedForecastItem.setHighTemp(extendedData.get(WeatherConst.HIGH_TEMPS).get(i));
+            extendedForecastItem.setLowTemp(extendedData.get(WeatherConst.LOW_TEMPS).get(i));
+            extendedForecastItem.setWindMPHDay(String.valueOf(extendedData.get(WeatherConst.DAY_WIND_MPHS).get(i)));
+            extendedForecastItem.setWindMPHNight(String.valueOf(extendedData.get(WeatherConst.NIGHT_WIND_MPHS).get(i)));
+            extendedForecastItem.setWindDirDay(extendedData.get(WeatherConst.DAY_WIND_DIRS).get(i));
+            extendedForecastItem.setWindDirNight(extendedData.get(WeatherConst.NIGHT_WIND_DIRS).get(i));
+            extendedForecastItem.setCondDesc(extendedData.get(WeatherConst.COND_DESCS).get(i));
 
             // Get every other item data since it is sent back from the JSON this way
             dayIndex = i * 2;
             nightIndex = ((i + 1) * 2) - 1;
 
-            extendedForecastItem.setDayOfWeek(extendedData.get(WeatherUtils.DAYS_OF_WEEK).get(dayIndex));
-            extendedForecastItem.setCondDay(extendedData.get(WeatherUtils.CONDITIONS).get(dayIndex));
-            extendedForecastItem.setCondNight(extendedData.get(WeatherUtils.CONDITIONS).get(nightIndex));
-            extendedForecastItem.setPrecipDay(extendedData.get(WeatherUtils.PRECIPS).get(dayIndex));
-            extendedForecastItem.setPrecipNight(extendedData.get(WeatherUtils.PRECIPS).get(nightIndex));
-            extendedForecastItem.setDescDay(extendedData.get(WeatherUtils.DESCS).get(dayIndex));
-            extendedForecastItem.setDescNight(extendedData.get(WeatherUtils.DESCS).get(nightIndex));
+            extendedForecastItem.setDayOfWeek(extendedData.get(WeatherConst.DAYS_OF_WEEK).get(dayIndex));
+            extendedForecastItem.setCondDay(extendedData.get(WeatherConst.CONDITIONS).get(dayIndex));
+            extendedForecastItem.setCondNight(extendedData.get(WeatherConst.CONDITIONS).get(nightIndex));
+            extendedForecastItem.setPrecipDay(extendedData.get(WeatherConst.PRECIPS).get(dayIndex));
+            extendedForecastItem.setPrecipNight(extendedData.get(WeatherConst.PRECIPS).get(nightIndex));
+            extendedForecastItem.setDescDay(extendedData.get(WeatherConst.DESCS).get(dayIndex));
+            extendedForecastItem.setDescNight(extendedData.get(WeatherConst.DESCS).get(nightIndex));
 
             extendedForecast.add(extendedForecastItem);
         }

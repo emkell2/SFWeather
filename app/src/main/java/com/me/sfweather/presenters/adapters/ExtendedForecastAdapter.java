@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.me.sfweather.R;
 import com.me.sfweather.models.ExtendedForecast;
+import com.me.sfweather.utilities.WeatherConst;
 import com.me.sfweather.utilities.WeatherUtils;
 
 import java.util.ArrayList;
@@ -44,8 +45,8 @@ public class ExtendedForecastAdapter extends RecyclerView.Adapter<ExtendedForeca
             holder.date.setText(extendedForecast.get(position).getDate());
             holder.dayTitle.setText(extendedForecast.get(position).getDayOfWeek().toUpperCase());
             holder.nightTitle.setText(extendedForecast.get(position).getDayOfWeek().toUpperCase() + " NIGHT");
-            holder.highTemp.setText(extendedForecast.get(position).getHighTemp() + WeatherUtils.DEGREE_SYMBOL);
-            holder.lowTemp.setText(extendedForecast.get(position).getLowTemp() + WeatherUtils.DEGREE_SYMBOL);
+            holder.highTemp.setText(extendedForecast.get(position).getHighTemp() + WeatherConst.DEGREE_SYMBOL);
+            holder.lowTemp.setText(extendedForecast.get(position).getLowTemp() + WeatherConst.DEGREE_SYMBOL);
             holder.windDayDesc.setText(
                     extendedForecast.get(position).getWindDirDay()
                             + " "
@@ -56,8 +57,8 @@ public class ExtendedForecastAdapter extends RecyclerView.Adapter<ExtendedForeca
                             + " "
                             + extendedForecast.get(position).getWindMPHNight()
                             + " MPH");
-            holder.precipDay.setText(extendedForecast.get(position).getPrecipDay() + WeatherUtils.PERCENT_SYMBOL);
-            holder.precipNight.setText(extendedForecast.get(position).getPrecipNight() + WeatherUtils.PERCENT_SYMBOL);
+            holder.precipDay.setText(extendedForecast.get(position).getPrecipDay() + WeatherConst.PERCENT_SYMBOL);
+            holder.precipNight.setText(extendedForecast.get(position).getPrecipNight() + WeatherConst.PERCENT_SYMBOL);
             holder.descDay.setText(extendedForecast.get(position).getDescDay());
             holder.descNight.setText(extendedForecast.get(position).getDescNight());
 

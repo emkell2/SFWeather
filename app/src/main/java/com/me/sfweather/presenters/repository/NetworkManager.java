@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
-import com.me.sfweather.utilities.WeatherUtils;
+import com.me.sfweather.utilities.WeatherConst;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -113,16 +113,16 @@ public class NetworkManager {
 
                 switch (forecastType) {
                     case HOURLY:
-                        intentActionStr = WeatherUtils.HOURLY_DATA_RECEIVED_FILTER;
-                        intentDataStr = WeatherUtils.HOURLY_JSON_DATA;
+                        intentActionStr = WeatherConst.HOURLY_DATA_RECEIVED_FILTER;
+                        intentDataStr = WeatherConst.HOURLY_JSON_DATA;
                         break;
                     case CURRENT:
-                        intentActionStr = WeatherUtils.CURRENT_DATA_RECEIVED_FILTER;
-                        intentDataStr = WeatherUtils.CURRENT_JSON_DATA;
+                        intentActionStr = WeatherConst.CURRENT_DATA_RECEIVED_FILTER;
+                        intentDataStr = WeatherConst.CURRENT_JSON_DATA;
                         break;
                     case EXTENDED:
-                        intentActionStr = WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER;
-                        intentDataStr = WeatherUtils.EXTENDED_JSON_DATA;
+                        intentActionStr = WeatherConst.EXTENDED_DATA_RECEIVED_FILTER;
+                        intentDataStr = WeatherConst.EXTENDED_JSON_DATA;
                         break;
                 }
                 Intent dataReceivedIntent = new Intent(intentActionStr);

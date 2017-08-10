@@ -20,7 +20,7 @@ import com.me.sfweather.models.ExtendedForecast;
 import com.me.sfweather.presenters.WeatherPresenter;
 import com.me.sfweather.presenters.adapters.ExtendedForecastAdapter;
 import com.me.sfweather.presenters.repository.NetworkManager;
-import com.me.sfweather.utilities.WeatherUtils;
+import com.me.sfweather.utilities.WeatherConst;
 import com.me.sfweather.views.interfaces.ViewInterface;
 
 import java.util.ArrayList;
@@ -44,8 +44,8 @@ public class ExtendedFragment extends Fragment implements ViewInterface {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(WeatherUtils.ACTION_UPDATE_EXTENDED_VIEWS)) {
-                ArrayList<ExtendedForecast> data = intent.getParcelableArrayListExtra(WeatherUtils.EXTENDED_DATA);
+            if (intent.getAction().equals(WeatherConst.ACTION_UPDATE_EXTENDED_VIEWS)) {
+                ArrayList<ExtendedForecast> data = intent.getParcelableArrayListExtra(WeatherConst.EXTENDED_DATA);
                 mExtendedForecastList.addAll(data);
             } else {
                 mPresenter.handleData(intent);
@@ -84,8 +84,8 @@ public class ExtendedFragment extends Fragment implements ViewInterface {
         super.onCreate(savedInstanceState);
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER);
-        filter.addAction(WeatherUtils.ACTION_UPDATE_EXTENDED_VIEWS);
+        filter.addAction(WeatherConst.EXTENDED_DATA_RECEIVED_FILTER);
+        filter.addAction(WeatherConst.ACTION_UPDATE_EXTENDED_VIEWS);
 
         // Register broadcast receiver
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, filter);

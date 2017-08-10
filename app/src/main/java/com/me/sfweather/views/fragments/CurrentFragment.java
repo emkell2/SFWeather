@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.me.sfweather.R;
 import com.me.sfweather.models.CurrentForecast;
 import com.me.sfweather.presenters.WeatherPresenter;
+import com.me.sfweather.utilities.WeatherConst;
 import com.me.sfweather.utilities.WeatherUtils;
 import com.me.sfweather.views.interfaces.ViewInterface;
 
@@ -47,8 +48,8 @@ public class CurrentFragment extends Fragment implements ViewInterface {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(WeatherUtils.ACTION_UPDATE_CURRENT_VIEWS)) {
-                mCurrentForecast = intent.getParcelableExtra(WeatherUtils.CURRENT_DATA);
+            if (intent.getAction().equals(WeatherConst.ACTION_UPDATE_CURRENT_VIEWS)) {
+                mCurrentForecast = intent.getParcelableExtra(WeatherConst.CURRENT_DATA);
                 populateViews(mCurrentForecast);
             } else {
                 mPresenter.handleData(intent);
@@ -81,8 +82,8 @@ public class CurrentFragment extends Fragment implements ViewInterface {
         super.onCreate(savedInstanceState);
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(WeatherUtils.CURRENT_DATA_RECEIVED_FILTER);
-        filter.addAction(WeatherUtils.ACTION_UPDATE_CURRENT_VIEWS);
+        filter.addAction(WeatherConst.CURRENT_DATA_RECEIVED_FILTER);
+        filter.addAction(WeatherConst.ACTION_UPDATE_CURRENT_VIEWS);
 
         // Register broadcast receiver
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, filter);
@@ -141,7 +142,7 @@ public class CurrentFragment extends Fragment implements ViewInterface {
     }
 
     public void populateViews(CurrentForecast currentForecast) {
-        feelsLike.setText(currentForecast.getFeelsLike() + WeatherUtils.DEGREE_SYMBOL);
+        feelsLike.setText(currentForecast.getFeelsLike() + WeatherConst.DEGREE_SYMBOL);
         conditionDesc.setText(currentForecast.getConditionDesc());
         wind.setText(currentForecast.getWind());
         humidity.setText(currentForecast.getHumidity());

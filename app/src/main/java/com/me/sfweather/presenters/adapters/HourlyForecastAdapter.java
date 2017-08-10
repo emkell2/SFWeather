@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.me.sfweather.R;
 import com.me.sfweather.models.HourlyForecast;
+import com.me.sfweather.utilities.WeatherConst;
 import com.me.sfweather.utilities.WeatherUtils;
 
 import java.util.ArrayList;
@@ -43,8 +44,8 @@ public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAd
         if (mContext != null) {
             String time = formatTime(hourlyForecast.get(position).getTime());
             holder.time.setText(time);
-            holder.temp.setText(hourlyForecast.get(position).getTemp() + WeatherUtils.DEGREE_SYMBOL);
-            holder.precip.setText(hourlyForecast.get(position).getPrecip() + WeatherUtils.PERCENT_SYMBOL);
+            holder.temp.setText(hourlyForecast.get(position).getTemp() + WeatherConst.DEGREE_SYMBOL);
+            holder.precip.setText(hourlyForecast.get(position).getPrecip() + WeatherConst.PERCENT_SYMBOL);
             holder.wind.setText(hourlyForecast.get(position).getWind() + " MPH");
 
             // Set condition data

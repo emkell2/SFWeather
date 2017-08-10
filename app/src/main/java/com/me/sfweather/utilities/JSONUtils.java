@@ -22,12 +22,12 @@ public class JSONUtils {
         List<String> windDir = JsonPath.read(jsonString, "$.hourly_forecast[*].wdir.dir");
         List<String> condition = JsonPath.read(jsonString, "$.hourly_forecast[*].icon_url");
 
-        data.put(WeatherUtils.TIMES, times);
-        data.put(WeatherUtils.TEMPS, temps);
-        data.put(WeatherUtils.PRECIPS, precip);
-        data.put(WeatherUtils.WIND_SPEEDS, windSpeed);
-        data.put(WeatherUtils.WIND_DIRS, windDir);
-        data.put(WeatherUtils.CONDITIONS, condition);
+        data.put(WeatherConst.TIMES, times);
+        data.put(WeatherConst.TEMPS, temps);
+        data.put(WeatherConst.PRECIPS, precip);
+        data.put(WeatherConst.WIND_SPEEDS, windSpeed);
+        data.put(WeatherConst.WIND_DIRS, windDir);
+        data.put(WeatherConst.CONDITIONS, condition);
 
         return data;
     }
@@ -47,18 +47,18 @@ public class JSONUtils {
         String uvIndex = JsonPath.read(jsonString, "$.current_observation.UV");
 
         feelsLike = feelsLike.substring(0,2);
-        dewPoint = dewPoint + WeatherUtils.DEGREE_SYMBOL;
+        dewPoint = dewPoint + WeatherConst.DEGREE_SYMBOL;
         pressure = pressure + " IN";
         String wind = windDir + " " + windSpeed + " MPH";
 
-        data.put(WeatherUtils.FEELS_LIKE, feelsLike);
-        data.put(WeatherUtils.CONDITION, condition);
-        data.put(WeatherUtils.CONDITION_DESC, condDesc);
-        data.put(WeatherUtils.WIND, wind);
-        data.put(WeatherUtils.HUMIDITY, humidity);
-        data.put(WeatherUtils.DEW_POINT, dewPoint);
-        data.put(WeatherUtils.PRESSURE, pressure);
-        data.put(WeatherUtils.UV_INDEX, uvIndex);
+        data.put(WeatherConst.FEELS_LIKE, feelsLike);
+        data.put(WeatherConst.CONDITION, condition);
+        data.put(WeatherConst.CONDITION_DESC, condDesc);
+        data.put(WeatherConst.WIND, wind);
+        data.put(WeatherConst.HUMIDITY, humidity);
+        data.put(WeatherConst.DEW_POINT, dewPoint);
+        data.put(WeatherConst.PRESSURE, pressure);
+        data.put(WeatherConst.UV_INDEX, uvIndex);
 
         return data;
     }
@@ -87,18 +87,18 @@ public class JSONUtils {
             dates.add(months.get(i) + " " + String.valueOf(days.get(i)));
         }
 
-        data.put(WeatherUtils.DAYS_OF_WEEK, daysOfWeek);
-        data.put(WeatherUtils.DATES, dates);
-        data.put(WeatherUtils.HIGH_TEMPS, highTemps);
-        data.put(WeatherUtils.LOW_TEMPS, lowTemps);
-        data.put(WeatherUtils.CONDITIONS, conds);
-        data.put(WeatherUtils.DESCS, descs);
-        data.put(WeatherUtils.PRECIPS, precips);
-        data.put(WeatherUtils.DAY_WIND_MPHS, dayWindMPHs);
-        data.put(WeatherUtils.NIGHT_WIND_MPHS, nightWindMPHs);
-        data.put(WeatherUtils.DAY_WIND_DIRS, dayWindDirs);
-        data.put(WeatherUtils.NIGHT_WIND_DIRS, nightWindDirs);
-        data.put(WeatherUtils.COND_DESCS, condDescs);
+        data.put(WeatherConst.DAYS_OF_WEEK, daysOfWeek);
+        data.put(WeatherConst.DATES, dates);
+        data.put(WeatherConst.HIGH_TEMPS, highTemps);
+        data.put(WeatherConst.LOW_TEMPS, lowTemps);
+        data.put(WeatherConst.CONDITIONS, conds);
+        data.put(WeatherConst.DESCS, descs);
+        data.put(WeatherConst.PRECIPS, precips);
+        data.put(WeatherConst.DAY_WIND_MPHS, dayWindMPHs);
+        data.put(WeatherConst.NIGHT_WIND_MPHS, nightWindMPHs);
+        data.put(WeatherConst.DAY_WIND_DIRS, dayWindDirs);
+        data.put(WeatherConst.NIGHT_WIND_DIRS, nightWindDirs);
+        data.put(WeatherConst.COND_DESCS, condDescs);
 
         return data;
     }

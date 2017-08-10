@@ -20,7 +20,7 @@ import com.me.sfweather.models.HourlyForecast;
 import com.me.sfweather.presenters.WeatherPresenter;
 import com.me.sfweather.presenters.adapters.HourlyForecastAdapter;
 import com.me.sfweather.presenters.repository.NetworkManager;
-import com.me.sfweather.utilities.WeatherUtils;
+import com.me.sfweather.utilities.WeatherConst;
 import com.me.sfweather.views.interfaces.ViewInterface;
 
 import java.util.ArrayList;
@@ -44,8 +44,8 @@ public class HourlyFragment extends Fragment implements ViewInterface {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(WeatherUtils.ACTION_UPDATE_HOURLY_VIEWS)) {
-                ArrayList<HourlyForecast> data = intent.getParcelableArrayListExtra(WeatherUtils.HOURLY_DATA);
+            if (intent.getAction().equals(WeatherConst.ACTION_UPDATE_HOURLY_VIEWS)) {
+                ArrayList<HourlyForecast> data = intent.getParcelableArrayListExtra(WeatherConst.HOURLY_DATA);
                 mHourlyForecastList.addAll(data);
             } else {
                 mPresenter.handleData(intent);
@@ -84,8 +84,8 @@ public class HourlyFragment extends Fragment implements ViewInterface {
         super.onCreate(savedInstanceState);
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(WeatherUtils.HOURLY_DATA_RECEIVED_FILTER);
-        filter.addAction(WeatherUtils.ACTION_UPDATE_HOURLY_VIEWS);
+        filter.addAction(WeatherConst.HOURLY_DATA_RECEIVED_FILTER);
+        filter.addAction(WeatherConst.ACTION_UPDATE_HOURLY_VIEWS);
 
         // Register broadcast receiver
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, filter);
