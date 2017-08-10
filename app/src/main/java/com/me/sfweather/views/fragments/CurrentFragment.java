@@ -95,7 +95,7 @@ public class CurrentFragment extends Fragment implements ViewInterface {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_details, container, false);
+        View v = inflater.inflate(R.layout.fragment_current, container, false);
 
         feelsLike = (TextView) v.findViewById(R.id.tvCurrTemp);
         conditionDesc = (TextView) v.findViewById(R.id.tvConditionDesc);

@@ -8,6 +8,7 @@ import android.view.View;
 import com.me.sfweather.models.CurrentForecast;
 import com.me.sfweather.models.ExtendedForecast;
 import com.me.sfweather.models.HourlyForecast;
+import com.me.sfweather.presenters.interfaces.PresenterInterface;
 import com.me.sfweather.presenters.repository.NetworkManager;
 import com.me.sfweather.utilities.JSONUtils;
 import com.me.sfweather.utilities.WeatherConst;
@@ -24,7 +25,7 @@ import static com.me.sfweather.utilities.WeatherConst.TIMES;
  * Created by erin.kelley on 8/10/17.
  */
 
-public class WeatherPresenter {
+public class WeatherPresenter implements PresenterInterface {
     private Context mContext;
     private ViewInterface mView;
     // 7 day forecast
