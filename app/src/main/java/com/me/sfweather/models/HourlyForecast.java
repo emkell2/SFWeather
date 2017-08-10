@@ -1,10 +1,13 @@
 package com.me.sfweather.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by erin.kelley on 8/8/17.
  */
 
-public class HourlyForecast {
+public class HourlyForecast implements Parcelable {
 
     private int id;
     private String time;
@@ -12,6 +15,31 @@ public class HourlyForecast {
     private String precip;
     private String wind;
     private String condition;
+
+    public HourlyForecast() {
+        // Empty Constructor
+    }
+
+    protected HourlyForecast(Parcel in) {
+        id = in.readInt();
+        time = in.readString();
+        temp = in.readString();
+        precip = in.readString();
+        wind = in.readString();
+        condition = in.readString();
+    }
+
+    public static final Creator<HourlyForecast> CREATOR = new Creator<HourlyForecast>() {
+        @Override
+        public HourlyForecast createFromParcel(Parcel in) {
+            return new HourlyForecast(in);
+        }
+
+        @Override
+        public HourlyForecast[] newArray(int size) {
+            return new HourlyForecast[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -59,5 +87,20 @@ public class HourlyForecast {
 
     public void setCondition(String condition) {
         this.condition = condition;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(time);
+        dest.writeString(temp);
+        dest.writeString(precip);
+        dest.writeString(wind);
+        dest.writeString(condition);
     }
 }

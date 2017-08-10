@@ -1,4 +1,4 @@
-package com.me.sfweather.managers;
+package com.me.sfweather.presenters.repository;
 
 import android.content.Context;
 import android.content.Intent;

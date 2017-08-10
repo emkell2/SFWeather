@@ -16,15 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.me.sfweather.R;
-import com.me.sfweather.adapters.ExtendedForecastAdapter;
-import com.me.sfweather.managers.NetworkManager;
 import com.me.sfweather.models.ExtendedForecast;
-import com.me.sfweather.views.activities.WeatherActivity;
-import com.me.sfweather.utilities.JSONUtils;
+import com.me.sfweather.presenters.WeatherPresenter;
+import com.me.sfweather.presenters.adapters.ExtendedForecastAdapter;
+import com.me.sfweather.presenters.repository.NetworkManager;
 import com.me.sfweather.utilities.WeatherUtils;
+import com.me.sfweather.views.interfaces.ViewInterface;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,7 +33,8 @@ import java.util.HashMap;
  * Use the {@link ExtendedFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ExtendedFragment extends Fragment {
+public class ExtendedFragment extends Fragment implements ViewInterface {
+    private WeatherPresenter mPresenter;
 
     // List of all hourly forecast data
     private ArrayList<ExtendedForecast> mExtendedForecastList;
@@ -44,21 +44,15 @@ public class ExtendedFragment extends Fragment {
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals(WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER)) {
-                WeatherActivity.setProgressBarVisibility(View.GONE);
-                String jsonString = intent.getExtras().getString(WeatherUtils.EXTENDED_JSON_DATA);
+            if (intent.getAction().equals(WeatherUtils.ACTION_UPDATE_EXTENDED_VIEWS)) {
+                ArrayList<ExtendedForecast> data = intent.getParcelableArrayListExtra(WeatherUtils.EXTENDED_DATA);
+                mExtendedForecastList.addAll(data);
+            } else {
+                mPresenter.handleData(intent);
+            }
 
-                // Parse json String for the extended data
-                HashMap extendedData = JSONUtils.parseExtendedJSONData(jsonString);
-
-                // Create extended forecast models and store the data in the list
-                WeatherUtils.createExtendedForecast(mExtendedForecastList, extendedData);
-                mExtendedForecastAdapter.notifyDataSetChanged();
-
-                if ((mSwipeRefreshLayout != null) && (mSwipeRefreshLayout.isRefreshing())) {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
+            if ((mSwipeRefreshLayout != null) && (mSwipeRefreshLayout.isRefreshing())) {
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         }
     };
@@ -89,12 +83,15 @@ public class ExtendedFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Register broadcast receiver
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
-                new IntentFilter(WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER));
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER);
+        filter.addAction(WeatherUtils.ACTION_UPDATE_EXTENDED_VIEWS);
 
-        WeatherActivity.setProgressBarVisibility(View.VISIBLE);
-        NetworkManager.getInstance(getContext()).getExtendedForecastData("");
+        // Register broadcast receiver
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, filter);
+
+        mPresenter = new WeatherPresenter(getContext(), this);
+        mPresenter.getExtendedForecastData();
     }
 
     @Override
@@ -141,6 +138,11 @@ public class ExtendedFragment extends Fragment {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public void onNewData() {
+        mExtendedForecastAdapter.notifyDataSetChanged();
     }
 
     private void refreshItems() {

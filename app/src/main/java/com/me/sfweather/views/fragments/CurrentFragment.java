@@ -15,13 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.me.sfweather.R;
-import com.me.sfweather.managers.NetworkManager;
 import com.me.sfweather.models.CurrentForecast;
-import com.me.sfweather.utilities.JSONUtils;
+import com.me.sfweather.presenters.WeatherPresenter;
 import com.me.sfweather.utilities.WeatherUtils;
-import com.me.sfweather.views.activities.WeatherActivity;
-
-import java.util.HashMap;
+import com.me.sfweather.views.interfaces.ViewInterface;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +28,7 @@ import java.util.HashMap;
  * Use the {@link CurrentFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CurrentFragment extends Fragment {
+public class CurrentFragment extends Fragment implements ViewInterface {
     private TextView feelsLike;
     private TextView conditionDesc;
     private TextView wind;
@@ -41,24 +38,20 @@ public class CurrentFragment extends Fragment {
     private TextView uvIndex;
     private ImageView condition;
 
+    private CurrentForecast mCurrentForecast;
+
+    private WeatherPresenter mPresenter;
+
     private OnFragmentInteractionListener mListener;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (action.equals(WeatherUtils.CURRENT_DATA_RECEIVED_FILTER)) {
-                WeatherActivity.setProgressBarVisibility(View.GONE);
-                String jsonString = intent.getExtras().getString(WeatherUtils.CURRENT_JSON_DATA);
-
-                // Parse json String for the current data
-                HashMap currentData = JSONUtils.parseCurrentJSONData(jsonString);
-
-                // Create current forecast model and store the data in it
-                CurrentForecast mCurrentForecast = WeatherUtils.createCurrentForecast(currentData);
-
-                // Populate views with model data
+            if (intent.getAction().equals(WeatherUtils.ACTION_UPDATE_CURRENT_VIEWS)) {
+                mCurrentForecast = intent.getParcelableExtra(WeatherUtils.CURRENT_DATA);
                 populateViews(mCurrentForecast);
+            } else {
+                mPresenter.handleData(intent);
             }
         }
     };
@@ -87,9 +80,14 @@ public class CurrentFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WeatherUtils.CURRENT_DATA_RECEIVED_FILTER);
+        filter.addAction(WeatherUtils.ACTION_UPDATE_CURRENT_VIEWS);
+
         // Register broadcast receiver
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver,
-                new IntentFilter(WeatherUtils.CURRENT_DATA_RECEIVED_FILTER));
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(mMessageReceiver, filter);
+
+        mPresenter = new WeatherPresenter(getContext(), this);
     }
 
     @Override
@@ -131,7 +129,15 @@ public class CurrentFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        NetworkManager.getInstance(getContext()).getCurrentForecastData("");
+
+        if (mPresenter != null) {
+            mPresenter.getCurrentForecastData();
+        }
+    }
+
+    @Override
+    public void onNewData() {
+//        populateViews(mCurrentForecast);
     }
 
     public void populateViews(CurrentForecast currentForecast) {

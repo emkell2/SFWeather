@@ -24,6 +24,12 @@ public class WeatherUtils {
     public static final String HOURLY_JSON_DATA = "Hourly JSON Data";
     public static final String CURRENT_JSON_DATA = "Current JSON Data";
     public static final String EXTENDED_JSON_DATA = "Extended JSON Data";
+    public static final String ACTION_UPDATE_HOURLY_VIEWS = "action update hourly views";
+    public static final String ACTION_UPDATE_CURRENT_VIEWS = "action update current views";
+    public static final String ACTION_UPDATE_EXTENDED_VIEWS = "action update extended views";
+    public static final String HOURLY_DATA = "Hourly Data";
+    public static final String CURRENT_DATA = "Current Data";
+    public static final String EXTENDED_DATA = "Extended Data";
 
     // Hourly Strings
     public static final String TIMES = "times";
