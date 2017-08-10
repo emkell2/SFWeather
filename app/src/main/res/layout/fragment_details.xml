@@ -27,6 +27,7 @@
             android:id="@+id/rlTemp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_below="@id/tvNowTitle">
 
             <LinearLayout
@@ -69,7 +70,8 @@
                     android:id="@+id/tvConditionDesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:textAllCaps="true"/>
             </LinearLayout>
 
         </RelativeLayout>
@@ -78,6 +80,8 @@
             android:id="@+id/rlWind"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_below="@id/rlTemp">
 
             <TextView
@@ -98,6 +102,8 @@
             android:id="@+id/rlHumidity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_below="@id/rlWind">
 
             <TextView
@@ -118,6 +124,8 @@
             android:id="@+id/rlDewPoint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_below="@id/rlHumidity">
 
             <TextView
@@ -138,6 +146,8 @@
             android:id="@+id/rlPressure"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_below="@id/rlDewPoint">
 
             <TextView
@@ -158,6 +168,8 @@
             android:id="@+id/rlUVIndex"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:layout_below="@id/rlPressure">
 
             <TextView
