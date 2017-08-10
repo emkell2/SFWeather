@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.fragments.DetailsFragment"
+    tools:context=".views.fragments.CurrentFragment"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="16dp"
@@ -10,18 +10,24 @@
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
 
         <TextView
+            android:id="@+id/tvNowTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NOW"
-            android:textSize="24sp"/>
+            android:textSize="32sp"/>
 
         <RelativeLayout
             android:id="@+id/rlTemp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNowTitle">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -33,27 +39,38 @@
                     android:id="@+id/tvCurrTemp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24sp"/>
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:textSize="32sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:text="Feels like"
                     android:maxLines="1"/>
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/ivCurrWeather"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"/>
+                android:orientation="vertical"
+                android:layout_alignParentRight="true">
 
-            <TextView
-                android:id="@+id/tvConditionDesc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ivCurrWeather"/>
+                <ImageView
+                    android:id="@+id/ivCurrWeather"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:id="@+id/tvConditionDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
 
         </RelativeLayout>
 

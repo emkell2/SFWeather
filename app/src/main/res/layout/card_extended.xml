@@ -159,7 +159,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:orientation="horizontal"
-                android:background="@color/Blue_700">
+                android:background="@color/cardview_dark_background">
             </LinearLayout>
 
             <LinearLayout

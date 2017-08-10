@@ -39,7 +39,7 @@ public class JSONUtils {
         String feelsLike = JsonPath.read(jsonString, "$.current_observation.feelslike_f");
         String condition = JsonPath.read(jsonString, "$.current_observation.icon_url");
         String condDesc = JsonPath.read(jsonString, "$.current_observation.weather");
-        String windSpeed = JsonPath.read(jsonString, "$.current_observation.wind_mph");
+        String windSpeed = String.valueOf(JsonPath.read(jsonString, "$.current_observation.wind_mph"));
         String windDir = JsonPath.read(jsonString, "$.current_observation.wind_dir");
         String humidity = JsonPath.read(jsonString, "$.current_observation.relative_humidity");
         String dewPoint = String.valueOf(JsonPath.read(jsonString, "$.current_observation.dewpoint_f"));
@@ -49,7 +49,7 @@ public class JSONUtils {
         feelsLike = feelsLike.substring(0,2);
         dewPoint = dewPoint + WeatherUtils.DEGREE_SYMBOL;
         pressure = pressure + " IN";
-        String wind = String.valueOf(windDir) + " " + String.valueOf(windSpeed) + " MPH";
+        String wind = windDir + " " + windSpeed + " MPH";
 
         data.put(WeatherUtils.FEELS_LIKE, feelsLike);
         data.put(WeatherUtils.CONDITION, condition);

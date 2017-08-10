@@ -26,12 +26,12 @@ import java.util.HashMap;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link DetailsFragment.OnFragmentInteractionListener} interface
+ * {@link CurrentFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link DetailsFragment#newInstance} factory method to
+ * Use the {@link CurrentFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DetailsFragment extends Fragment {
+public class CurrentFragment extends Fragment {
     private TextView feelsLike;
     private TextView conditionDesc;
     private TextView wind;
@@ -63,7 +63,7 @@ public class DetailsFragment extends Fragment {
         }
     };
 
-    public DetailsFragment() {
+    public CurrentFragment() {
         // Required empty public constructor
     }
 
@@ -73,11 +73,11 @@ public class DetailsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DetailsFragment.
+     * @return A new instance of fragment CurrentFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DetailsFragment newInstance(String param1, String param2) {
-        DetailsFragment fragment = new DetailsFragment();
+    public static CurrentFragment newInstance(String param1, String param2) {
+        CurrentFragment fragment = new CurrentFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -135,7 +135,7 @@ public class DetailsFragment extends Fragment {
     }
 
     public void populateViews(CurrentForecast currentForecast) {
-        feelsLike.setText(currentForecast.getFeelsLike());
+        feelsLike.setText(currentForecast.getFeelsLike() + WeatherUtils.DEGREE_SYMBOL);
         conditionDesc.setText(currentForecast.getConditionDesc());
         wind.setText(currentForecast.getWind());
         humidity.setText(currentForecast.getHumidity());

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.me.sfweather.utilities.WeatherUtils;
 
@@ -23,6 +22,10 @@ public class NetworkManager {
     private static NetworkManager sInstance;
     private Context mContext;
     private static final String API_KEY = "26db30d44f3121e2";
+
+    private static final String HOURLY = "hourly";
+    private static final String CURRENT = "current";
+    private static final String EXTENDED = "extended";
 
     public NetworkManager(Context context) {
         mContext = context;
@@ -44,116 +47,37 @@ public class NetworkManager {
             loc = "Durham, NC";
         }
 
-        new Thread() {
-            @Override
-            public void run() {
-                HttpURLConnection urlConnection = null;
-                URL url = null;
-                try {
-                    url = new URL("http://api.wunderground.com/api/26db30d44f3121e2/hourly/q/NC/Durham.json");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestMethod("GET");
-                    urlConnection.setReadTimeout(10000 /* milliseconds */ );
-                    urlConnection.setConnectTimeout(15000 /* milliseconds */ );
-                    urlConnection.setDoOutput(true);
-                    urlConnection.connect();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                BufferedReader br = null;
-                StringBuilder sb = new StringBuilder();
-                try {
-                    br = new BufferedReader(new InputStreamReader(url.openStream()));
-
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-
-                    if (br != null) {
-                        br.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                String jsonString = sb.toString();
-                Log.d("Hourly JSON Data: ", "JSON: " + jsonString);
-
-                Intent hourlyDataReceivedIntent = new Intent(WeatherUtils.HOURLY_DATA_RECEIVED_FILTER);
-                hourlyDataReceivedIntent.putExtra(WeatherUtils.HOURLY_JSON_DATA, jsonString);
-                LocalBroadcastManager.getInstance(mContext).sendBroadcast(hourlyDataReceivedIntent);
-            }
-        }.start();
+        try {
+            URL url = new URL("http://api.wunderground.com/api/26db30d44f3121e2/hourly/q/NC/Durham.json");
+            getData(url, HOURLY);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getCurrentForecastData(String location) {
-        new Thread() {
-            @Override
-            public void run() {
-                HttpURLConnection urlConnection = null;
-                URL url = null;
-                try {
-                    url = new URL("http://api.wunderground.com/api/26db30d44f3121e2/conditions/q/NC/Durham.json");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    urlConnection = (HttpURLConnection) url.openConnection();
-                    urlConnection.setRequestMethod("GET");
-                    urlConnection.setReadTimeout(10000 /* milliseconds */ );
-                    urlConnection.setConnectTimeout(15000 /* milliseconds */ );
-                    urlConnection.setDoOutput(true);
-                    urlConnection.connect();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                BufferedReader br = null;
-                StringBuilder sb = new StringBuilder();
-                try {
-                    br = new BufferedReader(new InputStreamReader(url.openStream()));
-
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-
-                    if (br != null) {
-                        br.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                String jsonString = sb.toString();
-                Log.d("Hourly JSON Data: ", "JSON: " + jsonString);
-
-                Intent extendedDataReceivedIntent = new Intent(WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER);
-                extendedDataReceivedIntent.putExtra(WeatherUtils.EXTENDED_JSON_DATA, jsonString);
-                LocalBroadcastManager.getInstance(mContext).sendBroadcast(extendedDataReceivedIntent);
-            }
-        }.start();
+        try {
+            URL url = new URL("http://api.wunderground.com/api/26db30d44f3121e2/conditions/q/NC/Durham.json");
+            getData(url, CURRENT);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void getExtendedForecastData(String location) {
+        try {
+            URL url = new URL("http://api.wunderground.com/api/26db30d44f3121e2/forecast10day/q/NC/Durham.json");
+            getData(url, EXTENDED);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getData(final URL url, final String forecastType) {
         new Thread() {
             @Override
             public void run() {
-                HttpURLConnection urlConnection = null;
-                URL url = null;
-                try {
-                    url = new URL("http://api.wunderground.com/api/26db30d44f3121e2/forecast10day/q/NC/Durham.json");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
+                HttpURLConnection urlConnection;
 
                 try {
                     urlConnection = (HttpURLConnection) url.openConnection();
@@ -166,10 +90,9 @@ public class NetworkManager {
                     e.printStackTrace();
                 }
 
-                BufferedReader br = null;
                 StringBuilder sb = new StringBuilder();
                 try {
-                    br = new BufferedReader(new InputStreamReader(url.openStream()));
+                    BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 
                     String line;
                     while ((line = br.readLine()) != null) {
@@ -184,11 +107,27 @@ public class NetworkManager {
                 }
 
                 String jsonString = sb.toString();
-                Log.d("Hourly JSON Data: ", "JSON: " + jsonString);
 
-                Intent extendedDataReceivedIntent = new Intent(WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER);
-                extendedDataReceivedIntent.putExtra(WeatherUtils.EXTENDED_JSON_DATA, jsonString);
-                LocalBroadcastManager.getInstance(mContext).sendBroadcast(extendedDataReceivedIntent);
+                String intentActionStr = "";
+                String intentDataStr = "";
+
+                switch (forecastType) {
+                    case HOURLY:
+                        intentActionStr = WeatherUtils.HOURLY_DATA_RECEIVED_FILTER;
+                        intentDataStr = WeatherUtils.HOURLY_JSON_DATA;
+                        break;
+                    case CURRENT:
+                        intentActionStr = WeatherUtils.CURRENT_DATA_RECEIVED_FILTER;
+                        intentDataStr = WeatherUtils.CURRENT_JSON_DATA;
+                        break;
+                    case EXTENDED:
+                        intentActionStr = WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER;
+                        intentDataStr = WeatherUtils.EXTENDED_JSON_DATA;
+                        break;
+                }
+                Intent dataReceivedIntent = new Intent(intentActionStr);
+                dataReceivedIntent.putExtra(intentDataStr, jsonString);
+                LocalBroadcastManager.getInstance(mContext).sendBroadcast(dataReceivedIntent);
             }
         }.start();
     }

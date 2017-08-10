@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.me.sfweather.R;
-import com.me.sfweather.views.fragments.DetailsFragment;
+import com.me.sfweather.views.fragments.CurrentFragment;
 import com.me.sfweather.views.fragments.ExtendedFragment;
 import com.me.sfweather.views.fragments.HourlyFragment;
 
@@ -125,7 +125,7 @@ public class WeatherActivity extends AppCompatActivity {
                 case 0: // Fragment # 0 - This will show FirstFragment
                     return HourlyFragment.newInstance("", "Page # 1");
                 case 1: // Fragment # 0 - This will show FirstFragment different title
-                    return DetailsFragment.newInstance("", "Page # 2");
+                    return CurrentFragment.newInstance("", "Page # 2");
                 case 2: // Fragment # 1 - This will show SecondFragment
                     return ExtendedFragment.newInstance("", "Page # 3");
                 default:
