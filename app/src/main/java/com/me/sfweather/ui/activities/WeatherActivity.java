@@ -48,6 +48,8 @@ public class WeatherActivity extends AppCompatActivity {
 
         // Setup ProgressBar
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.getIndeterminateDrawable().setColorFilter(0xff2a56c6,
+                android.graphics.PorterDuff.Mode.MULTIPLY);
     }
 
     @Override

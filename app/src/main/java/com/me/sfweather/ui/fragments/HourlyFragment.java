@@ -8,14 +8,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.me.sfweather.adapters.HourlyForecastAdapter;
 import com.me.sfweather.R;
+import com.me.sfweather.adapters.HourlyForecastAdapter;
 import com.me.sfweather.managers.NetworkManager;
 import com.me.sfweather.models.HourlyForecast;
 import com.me.sfweather.ui.activities.WeatherActivity;
@@ -42,6 +43,7 @@ public class HourlyFragment extends Fragment {
     // List of all hourly forecast data
     private ArrayList<HourlyForecast> mHourlyForecastList;
     private HourlyForecastAdapter mHourlyForecastAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -57,6 +59,10 @@ public class HourlyFragment extends Fragment {
                 // Create hourly forecast models and store the data in the list
                 WeatherUtils.createHourlyForecast(mHourlyForecastList, hourlyData);
                 mHourlyForecastAdapter.notifyDataSetChanged();
+
+                if ((mSwipeRefreshLayout != null) && (mSwipeRefreshLayout.isRefreshing())) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
             }
         }
     };
@@ -113,6 +119,15 @@ public class HourlyFragment extends Fragment {
 
         mRecyclerView.setAdapter(mHourlyForecastAdapter);
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.Blue_700);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshItems();
+            }
+        });
+
         return v;
     }
 
@@ -132,6 +147,10 @@ public class HourlyFragment extends Fragment {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    private void refreshItems() {
+        NetworkManager.getInstance(getContext()).getHourlyForecastData("");
     }
 
     @Override

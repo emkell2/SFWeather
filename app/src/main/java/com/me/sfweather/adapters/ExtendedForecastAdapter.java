@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.me.sfweather.R;
 import com.me.sfweather.models.ExtendedForecast;
+import com.me.sfweather.utilities.WeatherUtils;
 
 import java.util.ArrayList;
 
@@ -40,7 +41,34 @@ public class ExtendedForecastAdapter extends RecyclerView.Adapter<ExtendedForeca
     public void onBindViewHolder(ExtendedForecastAdapter.ViewHolder holder, int position) {
         if (mContext != null) {
             holder.dayOfWeek.setText(extendedForecast.get(position).getDayOfWeek());
-            
+            holder.date.setText(extendedForecast.get(position).getDate());
+            holder.dayTitle.setText(extendedForecast.get(position).getDayOfWeek().toUpperCase());
+            holder.nightTitle.setText(extendedForecast.get(position).getDayOfWeek().toUpperCase() + " NIGHT");
+            holder.highTemp.setText(extendedForecast.get(position).getHighTemp() + WeatherUtils.DEGREE_SYMBOL);
+            holder.lowTemp.setText(extendedForecast.get(position).getLowTemp() + WeatherUtils.DEGREE_SYMBOL);
+            holder.windDayDesc.setText(
+                    extendedForecast.get(position).getWindDirDay()
+                            + " "
+                            + extendedForecast.get(position).getWindMPHDay()
+                            + " MPH");
+            holder.windNightDesc.setText(
+                    extendedForecast.get(position).getWindDirNight()
+                            + " "
+                            + extendedForecast.get(position).getWindMPHNight()
+                            + " MPH");
+            holder.precipDay.setText(extendedForecast.get(position).getPrecipDay() + WeatherUtils.PERCENT_SYMBOL);
+            holder.precipNight.setText(extendedForecast.get(position).getPrecipNight() + WeatherUtils.PERCENT_SYMBOL);
+            holder.descDay.setText(extendedForecast.get(position).getDescDay());
+            holder.descNight.setText(extendedForecast.get(position).getDescNight());
+
+            // Set condition data
+            String condDay = extendedForecast.get(position).getCondDay();
+            holder.condDay.setImageDrawable(WeatherUtils.getConditionDrawable(mContext, condDay));
+            String condNight = extendedForecast.get(position).getCondNight();
+            holder.condNight.setImageDrawable(WeatherUtils.getConditionDrawable(mContext, condNight));
+
+            holder.condDayDesc.setText(extendedForecast.get(position).getCondDesc());
+            holder.condNightDesc.setText(extendedForecast.get(position).getCondDesc());
         }
     }
 
@@ -53,6 +81,8 @@ public class ExtendedForecastAdapter extends RecyclerView.Adapter<ExtendedForeca
         CardView cv;
         TextView dayOfWeek;
         TextView date;
+        TextView dayTitle;
+        TextView nightTitle;
         TextView highTemp;
         TextView lowTemp;
         TextView windDayDesc;
@@ -61,6 +91,8 @@ public class ExtendedForecastAdapter extends RecyclerView.Adapter<ExtendedForeca
         TextView precipNight;
         TextView descDay;
         TextView descNight;
+        TextView condDayDesc;
+        TextView condNightDesc;
         ImageView condDay;
         ImageView condNight;
 
@@ -69,6 +101,8 @@ public class ExtendedForecastAdapter extends RecyclerView.Adapter<ExtendedForeca
             cv = (CardView) itemView.findViewById(R.id.cvExtendedForecast);
             dayOfWeek = (TextView) itemView.findViewById(R.id.tvDayOfWeek);
             date = (TextView) itemView.findViewById(R.id.tvDate);
+            dayTitle = (TextView) itemView.findViewById(R.id.tvDayTitle);
+            nightTitle = (TextView) itemView.findViewById(R.id.tvNightTitle);
             highTemp = (TextView) itemView.findViewById(R.id.tvHighTemp);
             lowTemp = (TextView) itemView.findViewById(R.id.tvLowTemp);
             precipDay = (TextView) itemView.findViewById(R.id.tvDayPrecip);
@@ -77,6 +111,8 @@ public class ExtendedForecastAdapter extends RecyclerView.Adapter<ExtendedForeca
             windNightDesc = (TextView) itemView.findViewById(R.id.tvDayWindDesc);
             descDay = (TextView) itemView.findViewById(R.id.tvDayDesc);
             descNight = (TextView) itemView.findViewById(R.id.tvNightDesc);
+            condDayDesc = (TextView) itemView.findViewById(R.id.tvDayCondDesc);
+            condNightDesc = (TextView) itemView.findViewById(R.id.tvNightCondDesc);
             condDay = (ImageView) itemView.findViewById(R.id.ivDayCond);
             condNight = (ImageView) itemView.findViewById(R.id.ivNightCond);
         }

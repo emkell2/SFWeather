@@ -52,33 +52,7 @@ public class HourlyForecastAdapter extends RecyclerView.Adapter<HourlyForecastAd
             condition = condition.replace(".gif", "");
             condition = condition.substring(28);
             if (!TextUtils.isEmpty(condition)) {
-                switch (condition.toLowerCase()) {
-                    case WeatherUtils.CLEAR_DAY:
-                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.clear));
-                        break;
-                    case WeatherUtils.CLEAR_NIGHT:
-                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.nt_clear));
-                        break;
-                    case WeatherUtils.PARTLY_CLOUDY_DAY:
-                    case WeatherUtils.MOSTLY_CLOUDY_DAY:
-                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.cloudy));
-                        break;
-                    case WeatherUtils.PARTLY_CLOUDY_NIGHT:
-                    case WeatherUtils.MOSTLY_CLOUDY_NIGHT:
-                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.nt_cloudy));
-                        break;
-                    case WeatherUtils.CHANCE_RAIN_DAY:
-                    case WeatherUtils.CHANCE_RAIN_NIGHT:
-                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.chancerain));
-                        break;
-                    case WeatherUtils.CHANCE_T_STORMS_DAY:
-                    case WeatherUtils.CHANCE_T_STORMS_NIGHT:
-                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.chancetstorms));
-                        break;
-                    default:
-                        holder.condition.setImageDrawable(mContext.getResources().getDrawable(R.drawable.clear));
-                        break;
-                }
+                holder.condition.setImageDrawable(WeatherUtils.getConditionDrawable(mContext, condition));
             }
         }
     }

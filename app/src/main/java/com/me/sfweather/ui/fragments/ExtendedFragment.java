@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ public class ExtendedFragment extends Fragment {
     // List of all hourly forecast data
     private ArrayList<ExtendedForecast> mExtendedForecastList;
     private ExtendedForecastAdapter mExtendedForecastAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -47,12 +49,16 @@ public class ExtendedFragment extends Fragment {
                 WeatherActivity.setProgressBarVisibility(View.GONE);
                 String jsonString = intent.getExtras().getString(WeatherUtils.EXTENDED_JSON_DATA);
 
-                // Parse json String for the hourly data
+                // Parse json String for the extended data
                 HashMap extendedData = JSONUtils.parseExtendedJSONData(jsonString);
 
-                // Create hourly forecast models and store the data in the list
+                // Create extended forecast models and store the data in the list
                 WeatherUtils.createExtendedForecast(mExtendedForecastList, extendedData);
                 mExtendedForecastAdapter.notifyDataSetChanged();
+
+                if ((mSwipeRefreshLayout != null) && (mSwipeRefreshLayout.isRefreshing())) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
             }
         }
     };
@@ -88,7 +94,7 @@ public class ExtendedFragment extends Fragment {
                 new IntentFilter(WeatherUtils.EXTENDED_DATA_RECEIVED_FILTER));
 
         WeatherActivity.setProgressBarVisibility(View.VISIBLE);
-        NetworkManager.getInstance(getContext()).getHourlyForecastData("");
+        NetworkManager.getInstance(getContext()).getExtendedForecastData("");
     }
 
     @Override
@@ -106,6 +112,15 @@ public class ExtendedFragment extends Fragment {
         mExtendedForecastAdapter = new ExtendedForecastAdapter(getContext(), mExtendedForecastList);
 
         mRecyclerView.setAdapter(mExtendedForecastAdapter);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipeRefreshLayout);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.Blue_700);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshItems();
+            }
+        });
 
         return v;
     }
@@ -126,6 +141,10 @@ public class ExtendedFragment extends Fragment {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    private void refreshItems() {
+        NetworkManager.getInstance(getContext()).getExtendedForecastData("");
     }
 
     @Override

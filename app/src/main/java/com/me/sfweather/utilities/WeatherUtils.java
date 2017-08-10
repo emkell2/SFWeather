@@ -1,5 +1,10 @@
 package com.me.sfweather.utilities;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
+
+import com.me.sfweather.R;
 import com.me.sfweather.models.ExtendedForecast;
 import com.me.sfweather.models.HourlyForecast;
 
@@ -12,29 +17,30 @@ import java.util.List;
 
 public class WeatherUtils {
     // Intent Strings
-    public static String HOURLY_DATA_RECEIVED_FILTER = "Hourly Data Received";
-    public static String EXTENDED_DATA_RECEIVED_FILTER = "Extended Data Received";
-    public static String HOURLY_JSON_DATA = "Hourly JSON Data";
-    public static String EXTENDED_JSON_DATA = "Extended JSON Data";
+    public static final String HOURLY_DATA_RECEIVED_FILTER = "Hourly Data Received";
+    public static final String EXTENDED_DATA_RECEIVED_FILTER = "Extended Data Received";
+    public static final String HOURLY_JSON_DATA = "Hourly JSON Data";
+    public static final String EXTENDED_JSON_DATA = "Extended JSON Data";
 
     // Hourly Strings
-    public static String TIMES = "times";
-    public static String TEMPS = "temps";
-    public static String PRECIPS = "precips";
-    public static String WIND_SPEEDS = "wind speeds";
-    public static String WIND_DIRS = "wind directions";
-    public static String CONDITIONS = "conditions";
+    public static final String TIMES = "times";
+    public static final String TEMPS = "temps";
+    public static final String PRECIPS = "precips";
+    public static final String WIND_SPEEDS = "wind speeds";
+    public static final String WIND_DIRS = "wind directions";
+    public static final String CONDITIONS = "conditions";
 
     // Extended Strings
-    public static String DAYS_OF_WEEK = "days of week";
-    public static String DESCS = "descriptions";
-    public static String DATES = "dates";
-    public static String HIGH_TEMPS = "high temps";
-    public static String LOW_TEMPS = "low temps";
-    public static String DAY_WIND_MPHS = "day wind mphs";
-    public static String NIGHT_WIND_MPHS = "night wind mphs";
-    public static String DAY_WIND_DIRS = "day wind dirs";
-    public static String NIGHT_WIND_DIRS = "night wind dirs";
+    public static final String DAYS_OF_WEEK = "days of week";
+    public static final String DESCS = "descriptions";
+    public static final String DATES = "dates";
+    public static final String HIGH_TEMPS = "high temps";
+    public static final String LOW_TEMPS = "low temps";
+    public static final String DAY_WIND_MPHS = "day wind mphs";
+    public static final String NIGHT_WIND_MPHS = "night wind mphs";
+    public static final String DAY_WIND_DIRS = "day wind dirs";
+    public static final String NIGHT_WIND_DIRS = "night wind dirs";
+    public static final String COND_DESCS = "condition descriptions";
 
     // Conditions
     public static final String CLEAR_DAY = "clear";
@@ -89,10 +95,11 @@ public class WeatherUtils {
             extendedForecastItem.setDate(extendedData.get(WeatherUtils.DATES).get(i));
             extendedForecastItem.setHighTemp(extendedData.get(WeatherUtils.HIGH_TEMPS).get(i));
             extendedForecastItem.setLowTemp(extendedData.get(WeatherUtils.LOW_TEMPS).get(i));
-            extendedForecastItem.setWindMPHDay(extendedData.get(WeatherUtils.DAY_WIND_MPHS).get(i));
-            extendedForecastItem.setWindMPHNight(extendedData.get(WeatherUtils.NIGHT_WIND_MPHS).get(i));
+            extendedForecastItem.setWindMPHDay(String.valueOf(extendedData.get(WeatherUtils.DAY_WIND_MPHS).get(i)));
+            extendedForecastItem.setWindMPHNight(String.valueOf(extendedData.get(WeatherUtils.NIGHT_WIND_MPHS).get(i)));
             extendedForecastItem.setWindDirDay(extendedData.get(WeatherUtils.DAY_WIND_DIRS).get(i));
             extendedForecastItem.setWindDirNight(extendedData.get(WeatherUtils.NIGHT_WIND_DIRS).get(i));
+            extendedForecastItem.setCondDesc(extendedData.get(WeatherUtils.COND_DESCS).get(i));
 
             // Get every other item data since it is sent back from the JSON this way
             dayIndex = i * 2;
@@ -108,5 +115,31 @@ public class WeatherUtils {
 
             extendedForecast.add(extendedForecastItem);
         }
+    }
+
+    public static Drawable getConditionDrawable(Context context, String condition) {
+        if (!TextUtils.isEmpty(condition)) {
+            switch (condition.toLowerCase()) {
+                case WeatherUtils.CLEAR_DAY:
+                   return context.getResources().getDrawable(R.drawable.clear);
+                case WeatherUtils.CLEAR_NIGHT:
+                    return context.getResources().getDrawable(R.drawable.nt_clear);
+                case WeatherUtils.PARTLY_CLOUDY_DAY:
+                case WeatherUtils.MOSTLY_CLOUDY_DAY:
+                    return context.getResources().getDrawable(R.drawable.cloudy);
+                case WeatherUtils.PARTLY_CLOUDY_NIGHT:
+                case WeatherUtils.MOSTLY_CLOUDY_NIGHT:
+                    return context.getResources().getDrawable(R.drawable.nt_cloudy);
+                case WeatherUtils.CHANCE_RAIN_DAY:
+                case WeatherUtils.CHANCE_RAIN_NIGHT:
+                     return context.getResources().getDrawable(R.drawable.chancerain);
+                case WeatherUtils.CHANCE_T_STORMS_DAY:
+                case WeatherUtils.CHANCE_T_STORMS_NIGHT:
+                    return context.getResources().getDrawable(R.drawable.chancetstorms);
+                default:
+                    return context.getResources().getDrawable(R.drawable.clear);
+            }
+        }
+        return null;
     }
 }

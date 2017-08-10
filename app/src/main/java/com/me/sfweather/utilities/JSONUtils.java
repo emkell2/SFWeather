@@ -49,10 +49,11 @@ public class JSONUtils {
         List<String> nightWindMPHs = JsonPath.read(jsonString, "$.forecast.simpleforecast.forecastday[*].avewind.mph");
         List<String> dayWindDirs = JsonPath.read(jsonString, "$.forecast.simpleforecast.forecastday[*].maxwind.dir");
         List<String> nightWindDirs = JsonPath.read(jsonString, "$.forecast.simpleforecast.forecastday[*].avewind.dir");
+        List<String> condDescs = JsonPath.read(jsonString, "$.forecast.simpleforecast.forecastday[*].conditions");
 
         List<String> dates = new ArrayList<>();
         for (int i = 0; i < months.size(); i++) {
-            dates.add(months.get(i) + " " + days.get(i));
+            dates.add(months.get(i) + " " + String.valueOf(days.get(i)));
         }
 
         data.put(WeatherUtils.DAYS_OF_WEEK, daysOfWeek);
@@ -66,6 +67,7 @@ public class JSONUtils {
         data.put(WeatherUtils.NIGHT_WIND_MPHS, nightWindMPHs);
         data.put(WeatherUtils.DAY_WIND_DIRS, dayWindDirs);
         data.put(WeatherUtils.NIGHT_WIND_DIRS, nightWindDirs);
+        data.put(WeatherUtils.COND_DESCS, condDescs);
 
         return data;
     }

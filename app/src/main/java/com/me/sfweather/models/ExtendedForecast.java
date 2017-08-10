@@ -10,6 +10,7 @@ public class ExtendedForecast {
     private String date;
     private String condDay;
     private String condNight;
+    private String condDesc;
     private String HighTemp;
     private String LowTemp;
     private String windMPHDay;
@@ -51,6 +52,14 @@ public class ExtendedForecast {
 
     public void setCondDay(String condDay) {
         this.condDay = condDay;
+    }
+
+    public String getCondDesc() {
+        return condDesc;
+    }
+
+    public void setCondDesc(String condDesc) {
+        this.condDesc = condDesc;
     }
 
     public String getCondNight() {
